@@ -1,8 +1,8 @@
 import "./App.css";
-import { useState } from "react";
-import Header from "./comonents/Header";
-import Editor from "./comonents/Editor";
-import List from "./comonents/List";
+import { useState, useRef } from "react";
+import Header from "./components/Header";
+import Editor from "./components/Editor";
+import List from "./components/List";
 
 const mokData = [
   {
@@ -27,12 +27,24 @@ const mokData = [
 
 function App() {
   const [todos, setTodos] = useState(mokData);
+  const idRef = useRef(3);
+
+  const onCreate = (content) => {
+    const newTodo = {
+      id: idRef.current++,
+      isDone: false,
+      content: content,
+      date: new Date().getTime(),
+    };
+
+    setTodos([newTodo, ...todos]);
+  };
 
   return (
     <div className="App">
       <Header />
-      <Editor />
-      <List />
+      <Editor onCreate={onCreate} />
+      <List todos={todos} />
     </div>
   );
 }
